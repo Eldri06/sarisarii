@@ -212,27 +212,29 @@ function init_database() {
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )");
             
-            // Add trigger for updated_at column in PostgreSQL
+            // First create the timestamp function if it doesn't exist
             $db->exec("
-                DO $$
+                CREATE OR REPLACE FUNCTION update_timestamp()
+                RETURNS TRIGGER AS $$
                 BEGIN
-                    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'users_update_timestamp') THEN
-                        CREATE OR REPLACE FUNCTION update_timestamp()
-                        RETURNS TRIGGER AS $$
-                        BEGIN
-                            NEW.updated_at = NOW();
-                            RETURN NEW;
-                        END;
-                        $$ LANGUAGE plpgsql;
-
-                        CREATE TRIGGER users_update_timestamp
-                        BEFORE UPDATE ON users
-                        FOR EACH ROW
-                        EXECUTE FUNCTION update_timestamp();
-                    END IF;
-                END
-                $$;
+                    NEW.updated_at = NOW();
+                    RETURN NEW;
+                END;
+                $$ LANGUAGE plpgsql;
             ");
+            
+            // Then try to create the trigger
+            try {
+                $db->exec("
+                    CREATE TRIGGER users_update_timestamp
+                    BEFORE UPDATE ON users
+                    FOR EACH ROW
+                    EXECUTE FUNCTION update_timestamp();
+                ");
+            } catch (PDOException $e) {
+                // Trigger might already exist, which is fine
+                error_log("Note: " . $e->getMessage());
+            }
         }
         
         // Categories table
@@ -293,18 +295,17 @@ function init_database() {
             )");
             
             // Add trigger for updated_at column
-            $db->exec("
-                DO $$
-                BEGIN
-                    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'stories_update_timestamp') THEN
-                        CREATE TRIGGER stories_update_timestamp
-                        BEFORE UPDATE ON stories
-                        FOR EACH ROW
-                        EXECUTE FUNCTION update_timestamp();
-                    END IF;
-                END
-                $$;
-            ");
+            try {
+                $db->exec("
+                    CREATE TRIGGER stories_update_timestamp
+                    BEFORE UPDATE ON stories
+                    FOR EACH ROW
+                    EXECUTE FUNCTION update_timestamp();
+                ");
+            } catch (PDOException $e) {
+                // Trigger might already exist, which is fine
+                error_log("Note: " . $e->getMessage());
+            }
         }
         
         // Comments table
@@ -331,23 +332,44 @@ function init_database() {
         }
         
         // Likes table
-        $db->exec("CREATE TABLE IF NOT EXISTS likes (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            story_id INT NOT NULL,
-            user_id INT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            UNIQUE (story_id, user_id),
-            FOREIGN KEY (story_id) REFERENCES stories(id) ON DELETE CASCADE,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        if (DB_TYPE === 'mysql') {
+            $db->exec("CREATE TABLE IF NOT EXISTS likes (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                story_id INT NOT NULL,
+                user_id INT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE (story_id, user_id),
+                FOREIGN KEY (story_id) REFERENCES stories(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        } else {
+            $db->exec("CREATE TABLE IF NOT EXISTS likes (
+                id SERIAL PRIMARY KEY,
+                story_id INT NOT NULL,
+                user_id INT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE (story_id, user_id),
+                FOREIGN KEY (story_id) REFERENCES stories(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )");
+        }
         
         // Subscribers table
-        $db->exec("CREATE TABLE IF NOT EXISTS subscribers (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(100) NOT NULL UNIQUE,
-            status VARCHAR(20) DEFAULT 'active',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        if (DB_TYPE === 'mysql') {
+            $db->exec("CREATE TABLE IF NOT EXISTS subscribers (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(100) NOT NULL UNIQUE,
+                status VARCHAR(20) DEFAULT 'active',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        } else {
+            $db->exec("CREATE TABLE IF NOT EXISTS subscribers (
+                id SERIAL PRIMARY KEY,
+                email VARCHAR(100) NOT NULL UNIQUE,
+                status VARCHAR(20) DEFAULT 'active',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )");
+        }
         
         // Insert default categories if none exist
         $categoryCount = fetch_one("SELECT COUNT(*) as count FROM categories");
