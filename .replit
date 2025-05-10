@@ -2,7 +2,7 @@ modules = ["php"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["php"]
+packages = ["php", "imagemagick"]
 
 [workflows]
 runButton = "Project"
