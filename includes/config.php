@@ -4,12 +4,13 @@
  */
 
 // Database configuration
-define('DB_SERVER', 'localhost');     
-define('DB_PORT', '3307');            
-define('DB_USERNAME', 'root');        
-define('DB_PASSWORD', '');           
-define('DB_NAME', 'sarisari');        
-define('DB_TYPE', 'mysql');           
+define('DB_SERVER', 'ep-steep-recipe-a5be1i68.us-east-2.aws.neon.tech');     
+define('DB_PORT', '5432');            
+define('DB_USERNAME', 'neondb_owner');        
+define('DB_PASSWORD', 'npg_O4srxhnEejm8');           
+define('DB_NAME', 'neondb');        
+define('DB_TYPE', 'pgsql');     
+define('DB_SSL_MODE', 'require');      
 
 // Site configuration
 define('SITE_NAME', 'SariSari Stories');

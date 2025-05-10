@@ -16,7 +16,15 @@ function db_connect() {
 
     if (!isset($pdo)) {
         try {
-            $dsn = DB_TYPE . ':host=' . DB_SERVER . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+            // Different connection strings for MySQL vs PostgreSQL
+            if (DB_TYPE === 'mysql') {
+                $dsn = DB_TYPE . ':host=' . DB_SERVER . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+            } else if (DB_TYPE === 'pgsql') {
+                // For PostgreSQL with SSL
+                $dsn = DB_TYPE . ':host=' . DB_SERVER . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';sslmode=' . DB_SSL_MODE;
+            } else {
+                throw new PDOException("Unsupported database type: " . DB_TYPE);
+            }
             
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -24,6 +32,11 @@ function db_connect() {
                 PDO::ATTR_EMULATE_PREPARES => false,
             ];
             $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, $options);
+            
+            // Set schema for PostgreSQL
+            if (DB_TYPE === 'pgsql') {
+                $pdo->exec("SET search_path TO public");
+            }
         } catch (PDOException $e) {
             // Log the error but don't expose details to users
             error_log("Connection failed: " . $e->getMessage());
@@ -170,57 +183,152 @@ function init_database() {
         $db = db_connect();
         
         // Users table
-        $db->exec("CREATE TABLE IF NOT EXISTS users (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            username VARCHAR(50) NOT NULL UNIQUE,
-            email VARCHAR(100) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
-            full_name VARCHAR(100) NOT NULL,
-            bio TEXT,
-            profile_image VARCHAR(255) DEFAULT 'images/default-avatar.jpg',
-            is_admin TINYINT(1) DEFAULT 0,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        if (DB_TYPE === 'mysql') {
+            // MySQL version
+            $db->exec("CREATE TABLE IF NOT EXISTS users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(50) NOT NULL UNIQUE,
+                email VARCHAR(100) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                full_name VARCHAR(100) NOT NULL,
+                bio TEXT,
+                profile_image VARCHAR(255) DEFAULT 'images/default-avatar.jpg',
+                is_admin TINYINT(1) DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        } else {
+            // PostgreSQL version
+            $db->exec("CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                username VARCHAR(50) NOT NULL UNIQUE,
+                email VARCHAR(100) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                full_name VARCHAR(100) NOT NULL,
+                bio TEXT,
+                profile_image VARCHAR(255) DEFAULT 'images/default-avatar.jpg',
+                is_admin BOOLEAN DEFAULT FALSE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )");
+            
+            // Add trigger for updated_at column in PostgreSQL
+            $db->exec("
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'users_update_timestamp') THEN
+                        CREATE OR REPLACE FUNCTION update_timestamp()
+                        RETURNS TRIGGER AS $$
+                        BEGIN
+                            NEW.updated_at = NOW();
+                            RETURN NEW;
+                        END;
+                        $$ LANGUAGE plpgsql;
+
+                        CREATE TRIGGER users_update_timestamp
+                        BEFORE UPDATE ON users
+                        FOR EACH ROW
+                        EXECUTE FUNCTION update_timestamp();
+                    END IF;
+                END
+                $$;
+            ");
+        }
         
         // Categories table
-        $db->exec("CREATE TABLE IF NOT EXISTS categories (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(50) NOT NULL,
-            description TEXT,
-            icon VARCHAR(50),
-            slug VARCHAR(50) NOT NULL UNIQUE,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        if (DB_TYPE === 'mysql') {
+            $db->exec("CREATE TABLE IF NOT EXISTS categories (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(50) NOT NULL,
+                description TEXT,
+                icon VARCHAR(50),
+                slug VARCHAR(50) NOT NULL UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        } else {
+            $db->exec("CREATE TABLE IF NOT EXISTS categories (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(50) NOT NULL,
+                description TEXT,
+                icon VARCHAR(50),
+                slug VARCHAR(50) NOT NULL UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )");
+        }
         
         // Stories table
-        $db->exec("CREATE TABLE IF NOT EXISTS stories (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            title VARCHAR(255) NOT NULL,
-            content TEXT NOT NULL,
-            featured_image VARCHAR(255),
-            user_id INT NOT NULL,
-            category_id INT NOT NULL,
-            status VARCHAR(20) NOT NULL DEFAULT 'published',
-            featured BOOLEAN DEFAULT FALSE,
-            views INT DEFAULT 0,
-            slug VARCHAR(255) NOT NULL UNIQUE,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-            FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        if (DB_TYPE === 'mysql') {
+            $db->exec("CREATE TABLE IF NOT EXISTS stories (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                content TEXT NOT NULL,
+                featured_image VARCHAR(255),
+                user_id INT NOT NULL,
+                category_id INT NOT NULL,
+                status VARCHAR(20) NOT NULL DEFAULT 'published',
+                featured BOOLEAN DEFAULT FALSE,
+                views INT DEFAULT 0,
+                slug VARCHAR(255) NOT NULL UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        } else {
+            $db->exec("CREATE TABLE IF NOT EXISTS stories (
+                id SERIAL PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                content TEXT NOT NULL,
+                featured_image VARCHAR(255),
+                user_id INT NOT NULL,
+                category_id INT NOT NULL,
+                status VARCHAR(20) NOT NULL DEFAULT 'published',
+                featured BOOLEAN DEFAULT FALSE,
+                views INT DEFAULT 0,
+                slug VARCHAR(255) NOT NULL UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+            )");
+            
+            // Add trigger for updated_at column
+            $db->exec("
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'stories_update_timestamp') THEN
+                        CREATE TRIGGER stories_update_timestamp
+                        BEFORE UPDATE ON stories
+                        FOR EACH ROW
+                        EXECUTE FUNCTION update_timestamp();
+                    END IF;
+                END
+                $$;
+            ");
+        }
         
         // Comments table
-        $db->exec("CREATE TABLE IF NOT EXISTS comments (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            story_id INT NOT NULL,
-            user_id INT NOT NULL,
-            content TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (story_id) REFERENCES stories(id) ON DELETE CASCADE,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        if (DB_TYPE === 'mysql') {
+            $db->exec("CREATE TABLE IF NOT EXISTS comments (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                story_id INT NOT NULL,
+                user_id INT NOT NULL,
+                content TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (story_id) REFERENCES stories(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        } else {
+            $db->exec("CREATE TABLE IF NOT EXISTS comments (
+                id SERIAL PRIMARY KEY,
+                story_id INT NOT NULL,
+                user_id INT NOT NULL,
+                content TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (story_id) REFERENCES stories(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )");
+        }
         
         // Likes table
         $db->exec("CREATE TABLE IF NOT EXISTS likes (
