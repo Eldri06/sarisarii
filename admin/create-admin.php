@@ -7,10 +7,10 @@
  */
 
 // Include necessary files
-require_once '../includes/config.php';
-require_once '../includes/db.php';
-require_once '../includes/functions.php';
-require_once '../includes/auth.php';
+require_once dirname(__DIR__) . '/includes/config.php';
+require_once dirname(__DIR__) . '/includes/db.php';
+require_once dirname(__DIR__) . '/includes/functions.php';
+require_once dirname(__DIR__) . '/includes/auth.php';
 
 // Check if form was submitted
 $message = '';

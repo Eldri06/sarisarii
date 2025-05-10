@@ -9,11 +9,11 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Include necessary files
-require_once '../includes/config.php';
-require_once '../includes/db.php';
-require_once '../includes/functions.php';
-require_once '../includes/auth.php';
-require_once 'includes/admin-auth.php';
+require_once dirname(__DIR__) . '/includes/config.php';
+require_once dirname(__DIR__) . '/includes/db.php';
+require_once dirname(__DIR__) . '/includes/functions.php';
+require_once dirname(__DIR__) . '/includes/auth.php';
+require_once __DIR__ . '/includes/admin-auth.php';
 
 // Check if user is already logged in as admin
 if (is_admin()) {

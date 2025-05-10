@@ -4,9 +4,9 @@
  */
 
 // Include main auth file and other dependencies
-require_once '../../includes/config.php';
-require_once '../../includes/db.php';
-require_once '../../includes/functions.php';
+require_once dirname(dirname(__DIR__)) . '/includes/config.php';
+require_once dirname(dirname(__DIR__)) . '/includes/db.php';
+require_once dirname(dirname(__DIR__)) . '/includes/functions.php';
 
 /**
  * Check if current user is an admin
