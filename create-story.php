@@ -9,14 +9,22 @@ $page_description = "Share your Filipino story with the SariSari Stories communi
 
 // Add TinyMCE to the head
 $additional_head = '
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/ezhv7stnj1p20njlyk17x9ax00ija0xu9j3e0wwa4ybxhe94/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     tinymce.init({
         selector: "#content",
         height: 400,
-        plugins: "link image lists table code",
+        plugins: "link image lists table code autolink advlist media emoticons fullscreen preview",
         toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | table | code",
-        menubar: false
+        menubar: false,
+        image_advtab: true,
+        branding: false,
+        statusbar: false,
+        setup: function(editor) {
+            editor.on("change", function() {
+                editor.save(); // This ensures content is saved to the textarea
+            });
+        }
     });
 </script>';
 

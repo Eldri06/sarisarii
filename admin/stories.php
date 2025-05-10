@@ -449,14 +449,21 @@ switch ($action) {
 <?php
 // Additional scripts for story editor
 if ($action === 'new' || $action === 'edit'): 
-    $additional_scripts = '<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+    $additional_scripts = '<script src="https://cdn.tiny.cloud/1/ezhv7stnj1p20njlyk17x9ax00ija0xu9j3e0wwa4ybxhe94/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
       tinymce.init({
         selector: "#content",
         height: 400,
         plugins: "autolink lists link image charmap preview hr anchor searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking table directionality emoticons paste textpattern help",
         toolbar: "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
-        content_style: "body { font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; }"
+        content_style: "body { font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; }",
+        branding: false,
+        statusbar: false,
+        setup: function(editor) {
+            editor.on("change", function() {
+                editor.save(); // This ensures content is saved to the textarea
+            });
+        }
       });
     </script>';
 endif;
