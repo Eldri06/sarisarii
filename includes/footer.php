@@ -30,8 +30,29 @@ $footer_links = get_footer_links();
     </div>
     
     <div class="footer-bottom">
-      <p>&copy; <?php echo date('Y'); ?> SariSari Stories. All rights reserved.</p>
+      <p>&copy; <?php echo date('Y'); ?> SariSari Stories. All rights reserved. 
+        <a href="admin/login.php" class="admin-link">Admin Dashboard</a>
+      </p>
     </div>
+    
+    <style>
+      .admin-link {
+        display: inline-block;
+        margin-left: 15px;
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 3px 10px;
+        border-radius: 4px;
+        background-color: rgba(255, 255, 255, 0.1);
+        transition: background-color 0.3s, color 0.3s;
+      }
+      
+      .admin-link:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+    </style>
   </div>
 </footer>
 

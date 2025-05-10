@@ -33,7 +33,7 @@ function get_featured_stories($limit = 3) {
             FROM stories s
             JOIN users u ON s.user_id = u.id
             JOIN categories c ON s.category_id = c.id
-            WHERE s.featured = 1 AND s.status = 'published'
+            WHERE s.featured = TRUE AND s.status = 'published'
             ORDER BY s.created_at DESC
             LIMIT ?";
     

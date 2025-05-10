@@ -82,7 +82,28 @@ $nav_items = get_navigation_items();
           <div class="auth-buttons">
             <a href="login.php" class="login-btn">Login</a>
             <a href="create-story.php" class="share-story-btn">Share a Story</a>
+            <a href="admin/login.php" class="admin-btn">Admin</a>
           </div>
+          
+          <style>
+            .admin-btn {
+              display: inline-flex;
+              align-items: center;
+              padding: 8px 16px;
+              margin-left: 10px;
+              background-color: #e74c3c;
+              color: #fff;
+              border-radius: 4px;
+              text-decoration: none;
+              font-weight: 500;
+              font-size: 14px;
+              transition: background-color 0.3s;
+            }
+            
+            .admin-btn:hover {
+              background-color: #c0392b;
+            }
+          </style>
         <?php endif; ?>
       </div>
     </div>
