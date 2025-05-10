@@ -491,3 +491,16 @@ function is_current_url($pattern) {
     
     return false;
 }
+
+/**
+ * Get user's profile image or default avatar if not set
+ * 
+ * @param string|null $profile_image User's profile image path or null
+ * @return string Path to profile image or default avatar
+ */
+function get_profile_image($profile_image) {
+    if (!empty($profile_image) && file_exists('.' . $profile_image)) {
+        return $profile_image;
+    }
+    return '/images/default-avatar.png';
+}

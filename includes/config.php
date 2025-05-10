@@ -4,24 +4,24 @@
  */
 
 // Database configuration
-define('DB_SERVER', 'ep-steep-recipe-a5be1i68.us-east-2.aws.neon.tech');     
-define('DB_PORT', '5432');            
-define('DB_USERNAME', 'neondb_owner');        
-define('DB_PASSWORD', 'npg_O4srxhnEejm8');           
-define('DB_NAME', 'neondb');        
-define('DB_TYPE', 'pgsql');     
-define('DB_SSL_MODE', 'require');      
+define('DB_SERVER', 'localhost');     // 'localhost' for XAMPP
+define('DB_PORT', '3307');            // Default MySQL port in XAMPP
+define('DB_USERNAME', 'root');        // Default MySQL username in XAMPP
+define('DB_PASSWORD', '');            // Default MySQL password in XAMPP (blank)
+define('DB_NAME', 'sarisari_stories'); // Database name
+define('DB_TYPE', 'mysql');           // Using MySQL in XAMPP
 
 // Site configuration
 define('SITE_NAME', 'SariSari Stories');
 define('SITE_DESCRIPTION', 'A vibrant Filipino community platform for sharing personal narratives, hidden gems, local cuisine, events, and traditions.');
-define('SITE_URL', 'http://localhost/sarisari'); 
+define('SITE_URL', 'http://localhost/sarisarii'); 
 
 // Paths
 define('ROOT_PATH', dirname(__DIR__) . '/');
 define('INCLUDES_PATH', ROOT_PATH . 'includes/');
 define('PUBLIC_PATH', ROOT_PATH . 'public/');
 define('UPLOADS_PATH', PUBLIC_PATH . 'uploads/');
+define('ADMIN_PATH', ROOT_PATH . 'admin/');
 
 // Email Configuration
 define('ADMIN_EMAIL', 'admin@sarisari-stories.com');
