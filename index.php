@@ -25,12 +25,12 @@ $categories = get_categories();
   <div class="overlay"></div>
   <div class="container">
     <div class="hero-content">
-      <h1>Share Your Filipino Story</h1>
-      <h2>Discover Tales from Every Corner</h2>
-      <p>Join our vibrant community of storytellers preserving and celebrating Filipino culture, traditions, and daily life through personal narratives, hidden gems, local cuisine, and more.</p>
+      <h1>Share Your <br> Local Stories</h1>
+      <h2>Discover Your Community</h2>
+      <p>A vibrant Filipino community platform for sharing personal narratives, hidden gems, local cuisine, events, and traditions from your neighborhood or hometown.</p>
       <div class="hero-buttons">
         <a href="discover.php" class="primary-btn">Explore Stories</a>
-        <a href="create-story.php" class="secondary-btn">Share Your Story</a>
+        <a href="create-story.php" class="secondary-btn">Get Started</a>
       </div>
     </div>
   </div>
@@ -40,37 +40,106 @@ $categories = get_categories();
 <section class="featured" id="featured-section">
   <div class="container">
     <h2 class="section-title">Featured Stories</h2>
-    <p class="section-subtitle">Discover the most compelling narratives from our community</p>
-    
+    <p class="section-subtitle">Discover community stories, local traditions, and hidden gems shared by fellow Filipinos.</p>
+
     <div class="stories-grid">
-      <?php if (!empty($featured_stories)): ?>
-        <?php foreach ($featured_stories as $story): ?>
+      <?php if (!isset($_SESSION['user'])): ?>
+        <!-- Not logged in: show default curated stories -->
+        <?php
+          $default_stories = [
+            [
+              'title' => 'The Hidden Bakery of San Juan',
+              'category' => 'Food',
+              'featured_image' => 'images/bakery.jpg',
+              'author_name' => 'Eldrian Colinares',
+              'author_image' => 'images/author1.jpg',
+              'likes' => 126,
+              'comments' => 24,
+              'slug' => 'hidden-bakery-san-juan'
+            ],
+            [
+              'title' => 'Afternoons at Luneta Park',
+              'category' => 'City Life',
+              'featured_image' => 'images/park.jpg',
+              'author_name' => 'Jacob Demelino',
+              'author_image' => 'images/author2.jpg',
+              'likes' => 98,
+              'comments' => 14,
+              'slug' => 'afternoons-luneta-park'
+            ],
+            [
+              'title' => 'The Flower Markets of Dangwa',
+              'category' => 'Culture',
+              'featured_image' => 'images/market.jpg',
+              'author_name' => 'Gabriel Bitoy',
+              'author_image' => 'images/author3.jpg',
+              'likes' => 156,
+              'comments' => 32,
+              'slug' => 'flower-markets-dangwa'
+            ],
+          ];
+
+          foreach ($default_stories as $story):
+        ?>
           <div class="story-card">
             <div class="story-image">
-              <img src="<?php echo htmlspecialchars($story['featured_image'] ?? 'images/default-story.jpg'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
-              <a href="category.php?slug=<?php echo htmlspecialchars($story['category_slug']); ?>" class="category"><?php echo htmlspecialchars($story['category']); ?></a>
+              <img src="<?php echo $story['featured_image']; ?>" alt="<?php echo $story['title']; ?>">
+              <span class="category"><?php echo $story['category']; ?></span>
             </div>
             <div class="story-content">
-              <h3><a href="story.php?slug=<?php echo htmlspecialchars($story['slug']); ?>"><?php echo htmlspecialchars($story['title']); ?></a></h3>
-              <p><?php echo substr(strip_tags($story['content']), 0, 150) . '...'; ?></p>
+              <h3><a href="story.php?slug=<?php echo $story['slug']; ?>"><?php echo $story['title']; ?></a></h3>
               <div class="story-meta">
                 <div class="author">
-                  <img src="<?php echo htmlspecialchars($story['author_image'] ?? 'images/default-avatar.jpg'); ?>" alt="<?php echo htmlspecialchars($story['author_name']); ?>">
-                  <span><?php echo htmlspecialchars($story['author_name']); ?></span>
+                  <img src="<?php echo $story['author_image']; ?>" alt="<?php echo $story['author_name']; ?>">
+                  <span><?php echo $story['author_name']; ?></span>
                 </div>
-                <div class="stats">
-                  <span class="likes"><i class="far fa-heart"></i> <?php echo htmlspecialchars($story['likes']); ?></span>
-                  <span class="comments"><i class="far fa-comment"></i> <?php echo htmlspecialchars($story['comments']); ?></span>
+                <div class="story-stats">
+                  <span><i class="fas fa-heart"></i> <?php echo $story['likes']; ?></span>
+                  <span><i class="fas fa-comment"></i> <?php echo $story['comments']; ?></span>
                 </div>
               </div>
             </div>
           </div>
         <?php endforeach; ?>
+
       <?php else: ?>
-        <div class="no-stories">
-          <p>No featured stories yet. Be the first to <a href="create-story.php">share your story</a>!</p>
-        </div>
+        <!-- Logged-in user view -->
+        <?php if (empty($featured_stories)): ?>
+          <div class="empty-state">
+            <i class="fas fa-book-open"></i>
+            <h3>No stories yet</h3>
+            <p>Be the first to share your story with the community!</p>
+            <a href="create-story.php" class="primary-btn">Share a Story</a>
+          </div>
+        <?php else: ?>
+          <?php foreach ($featured_stories as $story): ?>
+            <div class="story-card">
+              <div class="story-image">
+                <img src="<?php echo htmlspecialchars($story['featured_image'] ?? 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&auto=format&fit=crop'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
+                <a href="category.php?slug=<?php echo htmlspecialchars($story['category_slug'] ?? '#'); ?>" class="category"><?php echo htmlspecialchars($story['category']); ?></a>
+              </div>
+              <div class="story-content">
+                <h3><a href="story.php?slug=<?php echo htmlspecialchars($story['slug']); ?>"><?php echo htmlspecialchars($story['title']); ?></a></h3>
+                <p><?php echo substr(strip_tags($story['content']), 0, 150) . '...'; ?></p>
+                <div class="story-meta">
+                  <div class="author">
+                    <img src="<?php echo htmlspecialchars($story['author_image'] ?? 'images/default-avatar.jpg'); ?>" alt="<?php echo htmlspecialchars($story['author_name']); ?>">
+                    <span><?php echo htmlspecialchars($story['author_name']); ?></span>
+                  </div>
+                  <div class="stats">
+                    <span class="likes"><i class="far fa-heart"></i> <?php echo htmlspecialchars($story['likes']); ?></span>
+                    <span class="comments"><i class="far fa-comment"></i> <?php echo htmlspecialchars($story['comments']); ?></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
       <?php endif; ?>
+    </div>
+
+    <div class="view-more">
+      <a href="discover.php" class="view-more-btn">View More Stories</a>
     </div>
   </div>
 </section>
@@ -80,14 +149,58 @@ $categories = get_categories();
   <div class="container">
     <h2 class="section-title">Explore Categories</h2>
     <p class="section-subtitle">Find stories that match your interests</p>
-    
+
     <div class="categories-grid">
-      <?php foreach ($categories as $category): ?>
-        <a href="category.php?slug=<?php echo htmlspecialchars($category['slug']); ?>" class="category-card">
+      <?php
+        // Merge or define categories array if not already set
+        if (!isset($categories) || empty($categories)) {
+          $categories = [
+            [
+              'icon' => 'fas fa-utensils',
+              'slug' => 'local-eats',
+              'name' => 'Local Eats',
+              'description' => 'Discover hidden culinary gems and traditional recipes'
+            ],
+            [
+              'icon' => 'fas fa-book-open',
+              'slug' => 'personal-stories',
+              'name' => 'Personal Stories',
+              'description' => 'Share meaningful experiences and memories from your community'
+            ],
+            [
+              'icon' => 'fas fa-map-marker-alt',
+              'slug' => 'hidden-spots',
+              'name' => 'Hidden Spots',
+              'description' => 'Explore lesser-known places with cultural and historical significance'
+            ],
+            [
+              'icon' => 'fas fa-camera',
+              'slug' => 'visual-tales',
+              'name' => 'Visual Tales',
+              'description' => 'Photo essays that capture the spirit of Filipino culture'
+            ],
+            [
+              'icon' => 'fas fa-calendar-alt',
+              'slug' => 'local-events',
+              'name' => 'Local Events',
+              'description' => 'Upcoming fiestas, markets, and community gatherings'
+            ],
+            [
+              'icon' => 'fas fa-users',
+              'slug' => 'community-heroes',
+              'name' => 'Community Heroes',
+              'description' => 'Celebrating individuals making a difference'
+            ]
+          ];
+        }
+
+        foreach ($categories as $category):
+      ?>
+        <a href="category.php?slug=<?php echo htmlspecialchars($category['slug'] ?? '#'); ?>" class="category-card">
           <div class="category-icon">
             <i class="<?php echo htmlspecialchars($category['icon']); ?>"></i>
           </div>
-          <h3><?php echo htmlspecialchars($category['name']); ?></h3>
+          <h3><?php echo htmlspecialchars($category['name'] ?? $category['title']); ?></h3>
           <p><?php echo htmlspecialchars($category['description']); ?></p>
         </a>
       <?php endforeach; ?>
@@ -95,40 +208,42 @@ $categories = get_categories();
   </div>
 </section>
 
-<!-- Community Spotlight -->
-<section class="community-spotlight">
+ <!-- Join Community Section -->
+ <section class="join-community">
   <div class="container">
-    <h2 class="section-title">Join Our Community</h2>
-    <p class="section-subtitle">Connect with fellow storytellers and explore together</p>
-    
-    <div class="cta-box">
-      <div class="cta-content">
-        <h3>Ready to Share Your Story?</h3>
-        <p>Whether it's a cherished family recipe, a hidden spot in your hometown, or a personal narrative that reflects Filipino culture, your story matters. Join our community of storytellers today!</p>
-        <div class="cta-buttons">
-          <a href="register.php" class="primary-btn">Sign Up Now</a>
-          <a href="about.php" class="secondary-btn">Learn More</a>
-        </div>
+    <div class="join-content">
+      <h2 class="section-title">Join Our Growing Community</h2>
+      <p>Connect with storytellers from across the Philippines and the diaspora. Share your own narratives, discover local traditions, and celebrate the vibrant tapestry of Filipino culture.</p>
+      <div class="join-buttons">
+        <?php if (!isset($_SESSION['user'])): ?>
+          <a href="register.php" class="primary-btn">Sign Up</a>
+        <?php else: ?>
+          <a href="discover.php" class="primary-btn">Explore</a>
+        <?php endif; ?>
+        <a href="#featured-section" class="secondary-btn">Learn More</a>
       </div>
+    </div>
+    <div class="join-image">
+      <img src="images/community.jpg" alt="Filipino Community Celebration">
     </div>
   </div>
 </section>
 
 <!-- Newsletter Section -->
 <section class="newsletter">
-  <div class="container">
-    <div class="newsletter-box">
-      <div class="newsletter-content">
-        <h3>Subscribe to Our Newsletter</h3>
-        <p>Stay updated with the latest stories, community events, and more.</p>
-        <form class="newsletter-form">
-          <input type="email" name="email" placeholder="Your email address" required>
-          <button type="submit" class="primary-btn">Subscribe</button>
-        </form>
-      </div>
+    <div class="container">
+      <h2 class="section-title">Subscribe to SariSari Stories</h2>
+      <p>Stay updated with the latest stories, community events, and featured content delivered straight to your inbox.</p>
+      <form class="newsletter-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit" name="subscribe" class="primary-btn">Subscribe</button>
+      </form>
+      <?php if (!empty($subscription_message)): ?>
+        <p class="subscription-confirmation"><?php echo $subscription_message; ?></p>
+      <?php endif; ?>
+      <p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
     </div>
-  </div>
-</section>
+  </section>
 
 <?php
 // Include footer

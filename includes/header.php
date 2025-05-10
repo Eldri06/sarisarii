@@ -40,25 +40,28 @@ $nav_items = get_navigation_items();
         </a>
       </div>
       <nav>
-        <ul>
-          <?php foreach ($nav_items as $title => $url): 
-            // Determine if this nav item should be marked as active
-            $active_class = '';
-            
-            if (strpos($url, '#') !== false) {
-                // If URL contains an anchor, check just the filename
-                $file_part = explode('#', $url)[0];
-                if ($file_part == $current_page) {
-                    $active_class = 'active';
-                }
-            } else if ($url == $current_page) {
-                $active_class = 'active';
-            }
-          ?>
-            <li><a href="<?php echo $url; ?>" class="<?php echo $active_class; ?>"><?php echo $title; ?></a></li>
-          <?php endforeach; ?>
-        </ul>
-      </nav>
+      <ul>
+        <?php
+        // Define navigation items
+        $nav_items = [
+            'Home' => 'index.php',
+            'Discover' => 'discover.php',
+            'Featured' => 'index.php#featured-section',
+            'About' => 'about.php'
+        ];
+        
+        // Determine active page
+        $current_page = basename($_SERVER['PHP_SELF']);
+        
+        foreach ($nav_items as $title => $url) :
+            $active_class = ($url == $current_page)? 'active' : '';
+            // You can expand this to set active based on current page
+        ?>
+        <li><a href="<?php echo $url; ?>" class="<?php echo $active_class; ?>"><?php echo $title; ?></a></li>
+        <?php endforeach; ?>
+      </ul>
+    </nav>
+
       <div class="header-actions">
         <a href="search.php" class="search-btn"><i class="fas fa-search"></i></a>
         <?php if ($current_user): ?>
