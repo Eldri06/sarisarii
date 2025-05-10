@@ -113,7 +113,7 @@ function login_user($username_or_email, $password) {
     $field = filter_var($username_or_email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
     
     // Get user from database
-    $sql = "SELECT id, username, email, password, full_name, profile_image FROM users WHERE {$field} = ?";
+    $sql = "SELECT id, username, email, password, full_name, profile_image, is_admin FROM users WHERE {$field} = ?";
     $user = fetch_one($sql, [$username_or_email]);
     
     if (!$user) {

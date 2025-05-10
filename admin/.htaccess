@@ -1,0 +1,25 @@
+# Protect the admin directory
+# Redirect to admin login page if not logged in
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !/admin/login\.php$ 
+RewriteCond %{REQUEST_URI} !/admin/create-admin\.php$
+RewriteCond %{REQUEST_URI} !/admin/css/.*$
+RewriteCond %{REQUEST_URI} !/admin/js/.*$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ login.php [L,QSA]
+
+# Deny access to .htaccess
+<Files .htaccess>
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Deny access to files with specific extensions
+<FilesMatch ".(htaccess|htpasswd|ini|log|sh|inc|bak)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Disable directory browsing
+Options -Indexes

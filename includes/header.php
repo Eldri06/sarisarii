@@ -71,6 +71,9 @@ $nav_items = get_navigation_items();
               <ul>
                 <li><a href="profile.php"><i class="fas fa-user"></i> My Profile</a></li>
                 <li><a href="create-story.php"><i class="fas fa-edit"></i> Create Story</a></li>
+                <?php if (isset($current_user['is_admin']) && $current_user['is_admin']): ?>
+                  <li><a href="admin/index.php"><i class="fas fa-cog"></i> Admin Dashboard</a></li>
+                <?php endif; ?>
                 <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
               </ul>
             </div>
