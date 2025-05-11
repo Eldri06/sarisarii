@@ -209,7 +209,7 @@ $categories = get_categories();
 </section>
 
  <!-- Join Community Section -->
- <section class="join-community">
+<section class="join-community">
   <div class="container">
     <div class="join-content">
       <h2 class="section-title">Join Our Growing Community</h2>
@@ -228,22 +228,21 @@ $categories = get_categories();
     </div>
   </div>
 </section>
-
 <!-- Newsletter Section -->
 <section class="newsletter">
-    <div class="container">
-      <h2 class="section-title">Subscribe to SariSari Stories</h2>
-      <p>Stay updated with the latest stories, community events, and featured content delivered straight to your inbox.</p>
-      <form class="newsletter-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <button type="submit" name="subscribe" class="primary-btn">Subscribe</button>
-      </form>
-      <?php if (!empty($subscription_message)): ?>
-        <p class="subscription-confirmation"><?php echo $subscription_message; ?></p>
-      <?php endif; ?>
-      <p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
+  <div class="container">
+    <div class="newsletter-box">
+      <div class="newsletter-content">
+        <h3>Subscribe to Our Newsletter</h3>
+        <p>Stay updated with the latest stories, community events, and more.</p>
+        <form class="newsletter-form">
+          <input type="email" name="email" placeholder="Your email address" required>
+          <button type="submit" class="primary-btn">Subscribe</button>
+        </form>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
 <?php
 // Include footer
