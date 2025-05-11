@@ -99,15 +99,16 @@ include_once 'includes/header.php';
         <div class="cta-box">
             <div class="cta-content">
                 <h2>Join Our Community</h2>
-                <p>Ready to share your story or discover narratives from fellow Filipinos? Join SariSari Stories today and become part of our growing community.</p>
+                <p>Ready to share your story or discover narratives from fellow Filipinos? <br> Join SariSari Stories today and become part of our growing community.</p>
                 <div class="cta-buttons">
                     <a href="register.php" class="primary-btn">Sign Up</a>
-                    <a href="discover.php" class="secondary-btn">Explore Stories</a>
+                    <a href="discover.php" class="a-secondary-btn">Explore Stories</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<hr>
 
 <section class="newsletter">
     <div class="container">

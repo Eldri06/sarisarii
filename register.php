@@ -119,7 +119,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </section>
 
-<?php
-// Include footer
-include_once 'includes/footer.php';
-?>

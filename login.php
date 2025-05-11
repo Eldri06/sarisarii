@@ -3,13 +3,31 @@
  * Login page for SariSari Stories
  */
 
-// Include header
+ 
+// Page metadata
 $page_title = "Login";
 $page_description = "Log in to your SariSari Stories account to share your stories, like and comment on others' tales.";
 
+// Background style
+$additional_head = <<<HTML
+<style>
+    body {
+        background-image: url('https://images.unsplash.com/photo-1669554017518-45d0337356f2?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&fbclid=IwZXh0bgNhZW0CMTEAAR7EkTCyoJl45dnNSSqM29mJADIB2MZK2rtUENzlVc4Re1QuIAta58IUndKjLQ_aem_1QH-HjkmCmede-BO5e-M5g');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+    }
+</style>
+HTML;
+
+// Include header
 include_once 'includes/header.php';
 
-// Check if user is already logged in
+// Echo additional <head> content
+if (isset($additional_head)) echo $additional_head;
+
+// Redirect if already logged in
 if (is_logged_in()) {
     header('Location: index.php');
     exit;
@@ -20,31 +38,23 @@ $username_email = '';
 $error = '';
 $success = '';
 
-// Check for redirect parameter
-$redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
+// Handle redirect parameter
+$redirect = $_GET['redirect'] ?? 'index.php';
 
-// Process login form
+// Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get form data
     $username_email = sanitize($_POST['username_email'] ?? '');
     $password = $_POST['password'] ?? '';
-    
-    // Validate form data
+
     if (empty($username_email) || empty($password)) {
         $error = 'Please enter both username/email and password.';
     } else {
-        // Attempt to log in
         $result = login_user($username_email, $password);
-        
         if (is_array($result)) {
-            // Login successful
             start_session($result);
-            
-            // Redirect to the requested page
             header('Location: ' . $redirect);
             exit;
         } else {
-            // Login failed
             $error = $result;
         }
     }
@@ -55,35 +65,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <div class="auth-container">
             <h1>Log In to SariSari Stories</h1>
-            
+
             <?php if (!empty($error)): ?>
-                <div class="alert alert-error">
-                    <?php echo $error; ?>
-                </div>
+                <div class="alert alert-error"><?php echo $error; ?></div>
             <?php endif; ?>
-            
+
             <?php if (!empty($success)): ?>
-                <div class="alert alert-success">
-                    <?php echo $success; ?>
-                </div>
+                <div class="alert alert-success"><?php echo $success; ?></div>
             <?php endif; ?>
-            
+
             <form action="login.php?redirect=<?php echo urlencode($redirect); ?>" method="POST" class="auth-form">
                 <div class="form-group">
                     <label for="username_email">Username or Email</label>
                     <input type="text" id="username_email" name="username_email" value="<?php echo htmlspecialchars($username_email); ?>" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                
+
                 <div class="form-actions">
                     <button type="submit" class="primary-btn">Log In</button>
                 </div>
             </form>
-            
+
             <div class="auth-links">
                 <p>Don't have an account? <a href="register.php">Sign Up</a></p>
             </div>
@@ -91,7 +97,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </section>
 
-<?php
-// Include footer
-include_once 'includes/footer.php';
-?>
+
