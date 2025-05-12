@@ -115,7 +115,7 @@ $categories = get_categories();
           <?php foreach ($featured_stories as $story): ?>
             <div class="story-card">
               <div class="story-image">
-                <img src="<?php echo htmlspecialchars($story['uploads/'] ?? 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&auto=format&fit=crop'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
+                <img src="<?php echo htmlspecialchars($story['/stories'] ?? 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&auto=format&fit=crop'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
                 <a href="category.php?slug=<?php echo htmlspecialchars($story['category_slug'] ?? '#'); ?>" class="category"><?php echo htmlspecialchars($story['category']); ?></a>
               </div>
               <div class="story-content">

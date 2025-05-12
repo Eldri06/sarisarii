@@ -95,7 +95,7 @@
   }
   
   /* Header Styles */
-  header {
+  #main-header {
     background-color: transparent;
     box-shadow: none;
     position: fixed;
@@ -107,12 +107,12 @@
     transition: var(--transition);
   }
   
-  header.scrolled {
+  #main-header.scrolled {
     background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
   
-  header .container {
+  #main-header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1231,6 +1231,7 @@ letter-spacing: 0.5px;
   
   .story-header {
     margin-bottom: 30px;
+    
   }
   
   .story-meta {
@@ -1362,6 +1363,7 @@ letter-spacing: 0.5px;
     color: #666;
     font-size: 1rem;
     cursor: pointer;
+    margin-left:100px;
   }
   
   .like-button.liked {
@@ -1395,6 +1397,7 @@ letter-spacing: 0.5px;
     color: white;
     font-size: 0.9rem;
     transition: var(--transition);
+    margin-right:50px;
   }
   
   .share-button.facebook {

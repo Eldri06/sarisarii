@@ -80,7 +80,7 @@ $share_url = SITE_URL . '/story.php?slug=' . urlencode($slug);
                 
                 <?php if (!empty($story['featured_image'])): ?>
                     <div class="story-featured-image">
-                        <img src="<?php echo htmlspecialchars($story['featured_image']); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
+                    <img src="<?php echo htmlspecialchars($story['/uploads/stories'] ?? 'images/default-story.jpg'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
                     </div>
                 <?php endif; ?>
                 
@@ -166,7 +166,7 @@ $share_url = SITE_URL . '/story.php?slug=' . urlencode($slug);
                         <?php foreach ($related_stories as $related): ?>
                             <div class="story-card">
                                 <div class="story-image">
-                                    <img src="<?php echo htmlspecialchars($related['featured_image'] ?? 'images/default-story.jpg'); ?>" alt="<?php echo htmlspecialchars($related['title']); ?>">
+                                    <img src="<?php echo htmlspecialchars($related['uploads/'] ?? 'images/default-story.jpg'); ?>" alt="<?php echo htmlspecialchars($related['title']); ?>">
                                     <a href="category.php?slug=<?php echo htmlspecialchars($related['category_slug']); ?>" class="category"><?php echo htmlspecialchars($related['category']); ?></a>
                                 </div>
                                 <div class="story-content">

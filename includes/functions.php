@@ -272,31 +272,26 @@ function time_elapsed_string($datetime) {
     $ago = new DateTime($datetime);
     $diff = $now->diff($ago);
 
-    $diff->w = floor($diff->d / 7);
-    $diff->d -= $diff->w * 7;
+    // Manually calculate weeks and remaining days
+    $weeks = floor($diff->d / 7);
+    $days = $diff->d % 7;
 
-    $string = array(
-        'y' => 'year',
-        'm' => 'month',
-        'w' => 'week',
-        'd' => 'day',
-        'h' => 'hour',
-        'i' => 'minute',
-        's' => 'second',
-    );
-    
-    foreach ($string as $k => &$v) {
-        if ($diff->$k) {
-            $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-        } else {
-            unset($string[$k]);
-        }
-    }
+    // Build time components manually
+    $string = array();
+
+    if ($diff->y) $string['y'] = $diff->y . ' year' . ($diff->y > 1 ? 's' : '');
+    if ($diff->m) $string['m'] = $diff->m . ' month' . ($diff->m > 1 ? 's' : '');
+    if ($weeks)   $string['w'] = $weeks . ' week' . ($weeks > 1 ? 's' : '');
+    if ($days)    $string['d'] = $days . ' day' . ($days > 1 ? 's' : '');
+    if ($diff->h) $string['h'] = $diff->h . ' hour' . ($diff->h > 1 ? 's' : '');
+    if ($diff->i) $string['i'] = $diff->i . ' minute' . ($diff->i > 1 ? 's' : '');
+    if ($diff->s) $string['s'] = $diff->s . ' second' . ($diff->s > 1 ? 's' : '');
 
     if (!empty($string)) {
-        return $string[key($string)] . ' ago';
+        // Return the first non-zero unit
+        return reset($string) . ' ago';
     }
-    
+
     return 'just now';
 }
 
