@@ -1,23 +1,17 @@
 <?php
-/**
- * Create Admin User for SariSari Stories
- * 
- * This script is used to create the first admin user.
- * After creating the first admin, this file should be deleted for security.
- */
 
-// Include necessary files
+
+
 require_once dirname(__DIR__) . '/includes/config.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 require_once dirname(__DIR__) . '/includes/functions.php';
 require_once dirname(__DIR__) . '/includes/auth.php';
 
-// Check if form was submitted
 $message = '';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get form data
+   
     $username = sanitize($_POST['username'] ?? '');
     $email = sanitize($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -25,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $full_name = sanitize($_POST['full_name'] ?? '');
     $setup_key = $_POST['setup_key'] ?? '';
     
-    // Very basic setup key validation (in a real app, use a more secure method)
+    // setup key 
     $valid_setup_key = 'sarisari_setup_2023';
     
-    // Validate input
+   
     if (empty($username) || empty($email) || empty($password) || empty($confirm_password) || empty($full_name)) {
         $error = "All fields are required";
     } elseif ($password !== $confirm_password) {
@@ -40,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($setup_key !== $valid_setup_key) {
         $error = "Invalid setup key";
     } else {
-        // Check if an admin already exists
+        
         $admin_check = fetch_one("SELECT COUNT(*) as count FROM users WHERE is_admin = 1");
         
         if ($admin_check && $admin_check['count'] > 0) {
@@ -50,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user_id = register_user($username, $email, $password, $full_name);
             
             if (is_numeric($user_id)) {
-                // Update the user to be an admin
+                // Update the user to be admin
                 $result = update('users', ['is_admin' => 1], 'id = ?', [$user_id]);
                 
                 if ($result) {
@@ -67,14 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Check if an admin already exists
+
 $admin_exists = false;
 $admin_check = fetch_one("SELECT COUNT(*) as count FROM users WHERE is_admin = 1");
 if ($admin_check && $admin_check['count'] > 0) {
     $admin_exists = true;
 }
 
-// Set the current year for copyright
+
 $current_year = date('Y');
 ?>
 <!DOCTYPE html>

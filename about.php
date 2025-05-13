@@ -1,9 +1,5 @@
 <?php
-/**
- * About page for SariSari Stories
- */
 
-// Include header
 $page_title = "About SariSari Stories";
 $page_description = "Learn about SariSari Stories, a vibrant Filipino community platform for sharing personal narratives, hidden gems, local cuisine, events, and traditions.";
 
@@ -126,6 +122,6 @@ include_once 'includes/header.php';
 </section>
 
 <?php
-// Include footer
+
 include_once 'includes/footer.php';
 ?>

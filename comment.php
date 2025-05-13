@@ -1,15 +1,11 @@
 <?php
-/**
- * Comment handler for SariSari Stories
- */
 
-// Include necessary files
 require_once 'includes/config.php';
 require_once 'includes/db.php';
 require_once 'includes/functions.php';
 require_once 'includes/auth.php';
 
-// Set content type to JSON
+
 header('Content-Type: application/json');
 
 // Check if user is logged in
@@ -21,7 +17,7 @@ if (!is_logged_in()) {
     exit;
 }
 
-// Check if it's a POST request
+// Check if its a POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode([
         'success' => false,
@@ -43,7 +39,6 @@ if (empty($story_id) || empty($content)) {
     exit;
 }
 
-// Get current user data
 $user = get_current_user_data();
 
 // Verify story exists

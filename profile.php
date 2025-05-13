@@ -1,23 +1,18 @@
 <?php
-/**
- * User profile page for SariSari Stories
- */
 
-// Include header
 $page_title = "User Profile";
 $page_description = "View and manage your SariSari Stories profile, stories, and interactions.";
 
 include_once 'includes/header.php';
 
-// Get profile username from URL
+
 $username = sanitize($_GET['username'] ?? '');
 
-// If no username provided and user is logged in, use current user
 if (empty($username) && is_logged_in()) {
     $username = $current_user['username'];
 }
 
-// If no username provided and user is not logged in, redirect to login
+
 if (empty($username)) {
     header('Location: login.php?redirect=' . urlencode($_SERVER['PHP_SELF']));
     exit;
@@ -27,18 +22,17 @@ if (empty($username)) {
 $sql = "SELECT id, username, full_name, bio, profile_image, created_at FROM users WHERE username = ?";
 $profile_user = fetch_one($sql, [$username]);
 
-// If user not found, show error
+
 if (!$profile_user) {
     $error = "User not found.";
 }
 
-// Get user's stories
+
 $user_stories = [];
 if ($profile_user) {
     $user_stories = get_stories_by_user($profile_user['id']);
 }
 
-// Check if logged-in user is viewing their own profile
 $is_own_profile = is_logged_in() && $current_user['id'] == $profile_user['id'];
 
 // Get user's liked stories
@@ -188,6 +182,6 @@ document.addEventListener("DOMContentLoaded", function() {
 </section>
 
 <?php
-// Include footer
+
 include_once 'includes/footer.php';
 ?>

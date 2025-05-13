@@ -1,9 +1,7 @@
-/**
- * Main JavaScript file for SariSari Stories
- */
+
 
 document.addEventListener('DOMContentLoaded', function() {
-    // transparent header on scroll
+    
     const header = document.getElementById('main-header');
     if (header) {
         window.addEventListener('scroll', function() {
@@ -247,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initialize active tab on profile page
+ 
     const activeTab = document.querySelector(".profile-tabs a.active");
     if (activeTab) {
         const tabId = activeTab.getAttribute("href");

@@ -1,12 +1,7 @@
 <?php
-/**
- * Create Default Admin User for SariSari Stories
- * 
- * This script creates a default admin user with predefined credentials.
- * This is for testing purposes only and should be removed in production.
- */
 
-// Include necessary files
+
+
 require_once dirname(__DIR__) . '/includes/config.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 require_once dirname(__DIR__) . '/includes/functions.php';
@@ -20,7 +15,7 @@ $default_admin = [
     'full_name' => 'Administrator'
 ];
 
-// Try to create the admin user
+
 try {
     // Check if an admin already exists
     $admin_check = fetch_one("SELECT COUNT(*) as count FROM users WHERE is_admin = TRUE");

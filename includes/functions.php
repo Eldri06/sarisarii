@@ -1,9 +1,5 @@
 <?php
-/**
- * Helper functions for SariSari Stories
- */
 
-// Include database connection
 require_once 'db.php';
 
 /**

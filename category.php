@@ -1,24 +1,19 @@
 <?php
-/**
- * Category page for SariSari Stories
- */
 
-// Include header
 include_once 'includes/header.php';
 
-// Get category slug from URL
+// Get category slug 
 $slug = sanitize($_GET['slug'] ?? '');
 
-// If no slug provided, redirect to discover page
+
 if (empty($slug)) {
     header('Location: discover.php');
     exit;
 }
 
-// Get category data
 $category = get_category($slug);
 
-// If category not found, show error
+
 if (!$category) {
     $page_title = "Category Not Found";
     $page_description = "The requested category was not found.";
@@ -141,6 +136,6 @@ if (!$category) {
 </section>
 
 <?php
-// Include footer
+
 include_once 'includes/footer.php';
 ?>

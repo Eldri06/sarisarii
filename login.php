@@ -1,10 +1,5 @@
 <?php
-/**
- * Login page for SariSari Stories
- */
 
- 
-// Page metadata
 $page_title = "Login";
 $page_description = "Log in to your SariSari Stories account to share your stories, like and comment on others' tales.";
 
@@ -21,13 +16,13 @@ $additional_head = <<<HTML
 </style>
 HTML;
 
-// Include header
+
 include_once 'includes/header.php';
 
-// Echo additional <head> content
+
 if (isset($additional_head)) echo $additional_head;
 
-// Redirect if already logged in
+
 if (is_logged_in()) {
     header('Location: index.php');
     exit;

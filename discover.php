@@ -1,15 +1,11 @@
 <?php
-/**
- * Discover page for SariSari Stories
- */
 
-// Include header
 $page_title = "Discover Stories";
 $page_description = "Explore all stories from the SariSari Stories community.";
 
 include_once 'includes/header.php';
 
-// Get categories for filter
+
 $categories = get_categories();
 
 // Process filter parameters
@@ -188,6 +184,6 @@ if (!empty($category_slug)) {
 </section>
 
 <?php
-// Include footer
+
 include_once 'includes/footer.php';
 ?>

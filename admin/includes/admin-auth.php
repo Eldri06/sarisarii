@@ -1,20 +1,16 @@
 <?php
-/**
- * Admin authentication functions for SariSari Stories
- */
 
-// Include main auth file and other dependencies
+
 require_once dirname(dirname(__DIR__)) . '/includes/config.php';
 require_once dirname(dirname(__DIR__)) . '/includes/db.php';
 require_once dirname(dirname(__DIR__)) . '/includes/functions.php';
 
-/**
- * Check if current user is an admin
- * 
- * @return bool True if user is an admin, false otherwise
- */
+
+
+ // @return bool True if user is an admin, false otherwise
+ 
 function is_admin() {
-    // Ensure session is started
+    
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
@@ -35,9 +31,9 @@ function is_admin() {
 }
 
 /**
- * Require admin privileges to access a page
  * 
- * @param string $redirect_url URL to redirect to if not an admin
+ * 
+ * @param string 
  * @return void
  */
 function require_admin($redirect_url = '../login.php') {
@@ -48,7 +44,7 @@ function require_admin($redirect_url = '../login.php') {
         }
         $_SESSION['error_message'] = "You don't have permission to access this page.";
         
-        // Redirect to login page
+        
         header("Location: $redirect_url");
         exit;
     }

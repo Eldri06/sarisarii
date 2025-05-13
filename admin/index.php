@@ -1,15 +1,11 @@
 <?php
-/**
- * Admin Dashboard for SariSari Stories
- */
 
-// Page title
 $page_title = "Dashboard";
 
-// Include header
+
 require_once 'includes/header.php';
 
-// Get admin statistics
+
 $stats = get_admin_stats();
 ?>
 
@@ -173,6 +169,6 @@ $stats = get_admin_stats();
 </section>
 
 <?php
-// Include footer
+
 require_once 'includes/footer.php';
 ?>

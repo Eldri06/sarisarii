@@ -1,9 +1,7 @@
-/**
- * Admin Dashboard JavaScript for SariSari Stories
- */
+
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Mobile menu toggle
+  
   const menuToggleBtn = document.querySelector('.menu-toggle');
   const adminSidebar = document.querySelector('.admin-sidebar');
   
@@ -43,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000);
   });
   
-  // Bulk selection for tables
+  
   const selectAllCheckbox = document.getElementById('select-all');
   if (selectAllCheckbox) {
     const checkboxes = document.querySelectorAll('table input[type="checkbox"]');
@@ -84,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  // Form validation
+  // Form 
   const adminForms = document.querySelectorAll('.admin-form');
   
   adminForms.forEach(form => {
@@ -97,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
           isValid = false;
           field.classList.add('error');
           
-          // Create error message if it doesn't exist
+          
           const errorElement = field.parentNode.querySelector('.field-error');
           if (!errorElement) {
             const error = document.createElement('p');
@@ -117,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!isValid) {
         e.preventDefault();
         
-        // Scroll to first error
+        
         const firstError = form.querySelector('.error');
         if (firstError) {
           firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -127,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // Confirm delete actions
+  
   const deleteButtons = document.querySelectorAll('.admin-action-btn.delete');
   
   deleteButtons.forEach(button => {
@@ -138,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // Handle image upload preview
+ 
   const imageInputs = document.querySelectorAll('input[type="file"][accept*="image"]');
   
   imageInputs.forEach(input => {
@@ -162,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // Category icon selection preview
+ 
   const iconOptions = document.querySelectorAll('.icon-option');
   const previewIcon = document.querySelector('.preview-icon i');
   
@@ -172,22 +170,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const input = this.querySelector('input');
         const iconClass = input.value;
         
-        // Update input checked state
+        
         if (!input.checked) {
           input.checked = true;
         }
         
-        // Update selected class
+        
         iconOptions.forEach(opt => opt.classList.remove('selected'));
         this.classList.add('selected');
         
-        // Update preview
+       
         previewIcon.className = iconClass;
       });
     });
   }
   
-  // Handle tabs in admin interfaces
+  
   const tabLinks = document.querySelectorAll('.tab-link');
   
   if (tabLinks.length) {
@@ -198,23 +196,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const targetId = this.getAttribute('href').substring(1);
         const targetTab = document.getElementById(targetId);
         
-        // Hide all tabs
+        
         document.querySelectorAll('.tab-content').forEach(tab => {
           tab.classList.remove('active');
         });
         
-        // Deactivate all links
+        
         tabLinks.forEach(tabLink => {
           tabLink.classList.remove('active');
         });
         
-        // Activate clicked tab and link
+        
         targetTab.classList.add('active');
         this.classList.add('active');
       });
     });
     
-    // Activate first tab by default
+    
     tabLinks[0].click();
   }
   
@@ -229,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordField.setAttribute('type', type);
         
-        // Toggle icon
+        
         this.innerHTML = type === 'password' ? 
           '<i class="fas fa-eye"></i>' : 
           '<i class="fas fa-eye-slash"></i>';

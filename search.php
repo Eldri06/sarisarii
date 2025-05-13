@@ -1,15 +1,11 @@
 <?php
-/**
- * Search page for SariSari Stories
- */
 
-// Include header
 $page_title = "Search Stories";
 $page_description = "Search for stories in SariSari Stories.";
 
 include_once 'includes/header.php';
 
-// Get search query from GET
+
 $query = sanitize($_GET['q'] ?? '');
 
 // Initialize variables
@@ -58,7 +54,7 @@ if (!empty($query)) {
     $count_result = fetch_one($count_sql, [$search_terms, $search_terms, $search_terms, $search_terms]);
     $total_results = $count_result ? $count_result['total'] : 0;
     
-    // Calculate total pages
+
     $total_pages = ceil($total_results / $limit);
 }
 ?>
@@ -158,6 +154,6 @@ if (!empty($query)) {
 </section>
 
 <?php
-// Include footer
+
 include_once 'includes/footer.php';
 ?>

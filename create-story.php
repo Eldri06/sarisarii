@@ -1,13 +1,9 @@
 <?php
-/**
- * Create story page for SariSari Stories
- */
 
-// Include header
 $page_title = "Create Story";
 $page_description = "Share your Filipino story with the SariSari Stories community.";
 
-// Add TinyMCE to the head
+// Add TinyMCE APOI
 $additional_head = '
 <script src="https://cdn.tiny.cloud/1/ezhv7stnj1p20njlyk17x9ax00ija0xu9j3e0wwa4ybxhe94/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
@@ -30,13 +26,13 @@ $additional_head = '
 
 include_once 'includes/header.php';
 
-// Redirect to login if not logged in
+
 if (!is_logged_in()) {
     header('Location: login.php?redirect=' . urlencode($_SERVER['PHP_SELF']));
     exit;
 }
 
-// Get categories for the form
+
 $categories = get_categories();
 
 // Initialize variables
@@ -162,6 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </section>
 
 <?php
-// Include footer
+
 include_once 'includes/footer.php';
 ?>

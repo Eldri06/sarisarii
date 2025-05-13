@@ -1,5 +1,5 @@
 <?php
-// Get footer links
+
 $footer_links = get_footer_links();
 ?>
 <footer>

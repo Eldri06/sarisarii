@@ -1,7 +1,4 @@
 <?php
-/**
- * Database connection for SariSari Stories
- */
 
 require_once 'config.php';
 

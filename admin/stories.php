@@ -1,15 +1,10 @@
 <?php
-/**
- * Admin Stories Management for SariSari Stories
- */
 
-// Page title
 $page_title = "Stories Management";
 
-// Include header
 require_once 'includes/header.php';
 
-// Initialize variables
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 $story_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $message = '';
@@ -18,7 +13,7 @@ $story = [];
 $stories = [];
 $categories = get_categories();
 
-// Set table columns and sort options
+
 $columns = [
     'id' => 'ID',
     'title' => 'Title',
@@ -133,7 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Handle different actions
 switch ($action) {
     case 'new':
         // New story form
@@ -447,7 +441,7 @@ switch ($action) {
 <?php endif; ?>
 
 <?php
-// Additional scripts for story editor
+
 if ($action === 'new' || $action === 'edit'): 
     $additional_scripts = '<script src="https://cdn.tiny.cloud/1/ezhv7stnj1p20njlyk17x9ax00ija0xu9j3e0wwa4ybxhe94/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
@@ -468,6 +462,5 @@ if ($action === 'new' || $action === 'edit'):
     </script>';
 endif;
 
-// Include footer
 require_once 'includes/footer.php';
 ?>

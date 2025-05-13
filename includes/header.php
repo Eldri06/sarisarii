@@ -1,18 +1,18 @@
 <?php
-// Start session if not already started
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Include necessary files
+
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
 require_once 'includes/auth.php';
 
-// Get current user if logged in
+
 $current_user = get_current_user_data();
 
-// Determine active page
+
 $current_page = basename($_SERVER['PHP_SELF']);
 $nav_items = get_navigation_items();
 ?>

@@ -1,9 +1,5 @@
 <?php
-/**
- * Authentication functions for SariSari Stories
- */
 
-// Include db
 require_once 'db.php';
 
 /**

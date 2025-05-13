@@ -10,10 +10,10 @@ require_once 'admin-auth.php';
 // Require admin privileges
 require_admin();
 
-// Get current user
+
 $current_user = $_SESSION['user'];
 
-// Current page for navigation highlighting
+
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>

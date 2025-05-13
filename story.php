@@ -1,21 +1,16 @@
 <?php
-/**
- * Single story page for SariSari Stories
- */
 
-// Include header
 include_once 'includes/header.php';
 
-// Get story slug from URL
+
 $slug = sanitize($_GET['slug'] ?? '');
 
-// If no slug provided, redirect to home
+
 if (empty($slug)) {
     header('Location: index.php');
     exit;
 }
 
-// Get story data
 $story = get_story($slug);
 
 // If story not found, show error
@@ -28,10 +23,10 @@ if (!$story) {
     $page_title = $story['title'];
     $page_description = substr(strip_tags($story['content']), 0, 155);
     
-    // Get comments for the story
+ 
     $comments = get_comments($story['id']);
     
-    // Check if current user has liked the story
+    
     $has_liked = is_logged_in() ? user_has_liked($story['id'], $current_user['id']) : false;
     
     // Get related stories from the same category
@@ -193,6 +188,6 @@ $share_url = SITE_URL . '/story.php?slug=' . urlencode($slug);
 </section>
 
 <?php
-// Include footer
+
 include_once 'includes/footer.php';
 ?>

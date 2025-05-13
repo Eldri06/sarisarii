@@ -1,21 +1,17 @@
 <?php
-/**
- * Registration page for SariSari Stories
- */
 
-// Include header
 $page_title = "Sign Up";
 $page_description = "Join SariSari Stories, a vibrant Filipino community platform for sharing your stories.";
 
 include_once 'includes/header.php';
 
-// Check if user is already logged in
+
 if (is_logged_in()) {
     header('Location: index.php');
     exit;
 }
 
-// Check if registration is enabled
+
 if (!ENABLE_REGISTRATION) {
     header('Location: index.php');
     exit;

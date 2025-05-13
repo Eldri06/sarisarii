@@ -1,15 +1,12 @@
 <?php
-/**
- * Admin Categories Management for SariSari Stories
- */
 
-// Page title
+
 $page_title = "Categories Management";
 
-// Include header
+
 require_once 'includes/header.php';
 
-// Initialize variables
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 $category_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $message = '';
@@ -17,7 +14,7 @@ $error = '';
 $category = [];
 $categories = [];
 
-// Available Font Awesome icons for categories
+
 $available_icons = [
     'fas fa-utensils' => 'Utensils',
     'fas fa-book-open' => 'Book Open',
@@ -35,7 +32,6 @@ $available_icons = [
     'fas fa-graduation-cap' => 'Graduation Cap'
 ];
 
-// Process form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'edit' || $action === 'new') {
         // Get form data
@@ -47,14 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($name)) {
             $error = "Category name is required.";
         } else {
-            // Create category data array
+            
             $category_data = [
                 'name' => $name,
                 'description' => $description,
                 'icon' => $icon
             ];
             
-            // Create slug from name
+            
             if ($action === 'new') {
                 $category_data['slug'] = create_slug($name, 'categories');
             } else {
@@ -62,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             if ($action === 'new') {
-                // Insert new category
+               
                 $category_id = insert('categories', $category_data);
                 
                 if ($category_id) {
@@ -73,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = "Failed to create category. Please try again.";
                 }
             } else {
-                // Update existing category
+               
                 $result = update('categories', $category_data, 'id = ?', [$category_id]);
                 
                 if ($result) {
@@ -86,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif ($action === 'delete' && $category_id) {
-        // Check if there are stories in this category
+       
         $story_count = fetch_one("SELECT COUNT(*) as count FROM stories WHERE category_id = ?", [$category_id]);
         
         if ($story_count && $story_count['count'] > 0) {
@@ -109,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Handle different actions
+
 switch ($action) {
     case 'new':
         // New category form
@@ -123,7 +119,7 @@ switch ($action) {
         break;
         
     case 'edit':
-        // Get category data for editing
+       
         if ($category_id) {
             $sql = "SELECT id, name, description, icon, slug FROM categories WHERE id = ?";
             $category = fetch_one($sql, [$category_id]);
@@ -140,7 +136,7 @@ switch ($action) {
         break;
         
     case 'delete':
-        // Confirm delete form
+        
         if ($category_id) {
             $sql = "SELECT id, name, description FROM categories WHERE id = ?";
             $category = fetch_one($sql, [$category_id]);
@@ -151,7 +147,7 @@ switch ($action) {
                 exit;
             }
             
-            // Get number of stories in this category
+           
             $story_count = fetch_one("SELECT COUNT(*) as count FROM stories WHERE category_id = ?", [$category_id]);
             
             if ($story_count && $story_count['count'] > 0) {
@@ -166,7 +162,7 @@ switch ($action) {
         break;
         
     default:
-        // List all categories
+        
         $sql = "SELECT c.*, (SELECT COUNT(*) FROM stories WHERE category_id = c.id) as story_count 
                 FROM categories c 
                 ORDER BY name ASC";
@@ -315,7 +311,7 @@ switch ($action) {
 <?php if ($action === 'new' || $action === 'edit'): ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Update preview when icon selection changes
+
   const iconInputs = document.querySelectorAll('input[name="icon"]');
   const previewIcon = document.querySelector('.preview-icon i');
   
@@ -324,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (this.checked) {
         previewIcon.className = this.value;
         
-        // Update selected class
+        
         document.querySelectorAll('.icon-option').forEach(option => {
           option.classList.remove('selected');
         });
@@ -333,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // Update preview when name changes
+  
   const nameInput = document.getElementById('name');
   const previewName = document.querySelector('.preview-name');
   
@@ -345,6 +341,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <?php endif; ?>
 
 <?php
-// Include footer
+
 require_once 'includes/footer.php';
 ?>

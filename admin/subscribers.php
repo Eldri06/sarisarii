@@ -1,15 +1,10 @@
 <?php
-/**
- * Admin Subscribers Management for SariSari Stories
- */
 
-// Page title
 $page_title = "Newsletter Subscribers";
 
-// Include header
 require_once 'includes/header.php';
 
-// Initialize variables
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 $subscriber_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $message = '';
@@ -173,7 +168,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Handle different actions
 switch ($action) {
     case 'new':
         // New subscriber form
@@ -530,6 +524,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <?php
-// Include footer
+
 require_once 'includes/footer.php';
 ?>

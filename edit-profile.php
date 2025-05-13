@@ -1,15 +1,10 @@
 <?php
-/**
- * Edit profile page for SariSari Stories
- */
 
-// Include header
 $page_title = "Edit Profile";
 $page_description = "Update your SariSari Stories profile information.";
 
 include_once 'includes/header.php';
 
-// Require login to access this page
 require_login('edit-profile.php');
 
 // Initialize variables
@@ -163,6 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </section>
 
 <?php
-// Include footer
+
 include_once 'includes/footer.php';
 ?>

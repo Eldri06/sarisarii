@@ -1,13 +1,9 @@
 <?php
-/**
- * Edit story page for SariSari Stories
- */
 
-// Include header
 $page_title = "Edit Story";
 $page_description = "Edit your story on SariSari Stories.";
 
-// Add TinyMCE to the head
+// Add TinyMCE 
 $additional_head = '
 <script src="https://cdn.tiny.cloud/1/ezhv7stnj1p20njlyk17x9ax00ija0xu9j3e0wwa4ybxhe94/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
@@ -30,7 +26,6 @@ $additional_head = '
 
 include_once 'includes/header.php';
 
-// Require login to access this page
 require_login('login.php');
 
 // Get story ID from URL
@@ -171,6 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </section>
 
 <?php
-// Include footer
+
 include_once 'includes/footer.php';
 ?>

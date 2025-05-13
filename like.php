@@ -1,15 +1,11 @@
 <?php
-/**
- * Like handler for SariSari Stories
- */
 
-// Include necessary files
 require_once 'includes/config.php';
 require_once 'includes/db.php';
 require_once 'includes/functions.php';
 require_once 'includes/auth.php';
 
-// Set content type to JSON
+
 header('Content-Type: application/json');
 
 // Check if user is logged in
@@ -30,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Get story ID from POST data
+
 $story_id = isset($_POST['story_id']) ? intval($_POST['story_id']) : 0;
 
 // Validate story ID

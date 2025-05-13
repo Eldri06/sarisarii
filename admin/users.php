@@ -1,12 +1,8 @@
 <?php
-/**
- * Admin Users Management for SariSari Stories
- */
 
-// Page title
 $page_title = "Users Management";
 
-// Include header
+
 require_once 'includes/header.php';
 
 // Initialize variables
@@ -351,6 +347,6 @@ switch ($action) {
 <?php endif; ?>
 
 <?php
-// Include footer
+
 require_once 'includes/footer.php';
 ?>

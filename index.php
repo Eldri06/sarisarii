@@ -1,22 +1,17 @@
 <?php
-/**
- * Home page for SariSari Stories
- */
 
-// Page title and description
 $page_title = "Home";
 $page_description = "A vibrant Filipino community platform for sharing personal narratives, hidden gems, local cuisine, events, and traditions.";
 
-// Include header
+
 include_once 'includes/header.php';
 
-// Get featured stories for hero section
+
 $hero_story = get_featured_stories(1)[0] ?? null;
 
-// Get featured stories for featured section
 $featured_stories = get_featured_stories(6);
 
-// Get categories
+
 $categories = get_categories();
 ?>
 

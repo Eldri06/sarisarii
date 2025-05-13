@@ -1,15 +1,12 @@
 <?php
-/**
- * Admin Comments Management for SariSari Stories
- */
 
-// Page title
+
 $page_title = "Comments Management";
 
-// Include header
+
 require_once 'includes/header.php';
 
-// Initialize variables
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 $comment_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $message = '';
@@ -17,7 +14,7 @@ $error = '';
 $comment = [];
 $comments = [];
 
-// Set table columns and sort options
+
 $columns = [
     'id' => 'ID',
     'content' => 'Content',
@@ -26,7 +23,7 @@ $columns = [
     'created_at' => 'Date'
 ];
 
-// Get sorting parameters
+
 $sort_by = isset($_GET['sort']) && array_key_exists($_GET['sort'], $columns) ? $_GET['sort'] : 'created_at';
 $sort_dir = isset($_GET['dir']) && in_array(strtoupper($_GET['dir']), ['ASC', 'DESC']) ? strtoupper($_GET['dir']) : 'DESC';
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
@@ -37,13 +34,13 @@ $search = isset($_GET['search']) ? sanitize($_GET['search']) : '';
 $story_filter = isset($_GET['story_id']) ? (int)$_GET['story_id'] : 0;
 $user_filter = isset($_GET['user_id']) ? (int)$_GET['user_id'] : 0;
 
-// Process form submissions
+// form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'edit' && $comment_id) {
-        // Get form data
+     
         $content = sanitize($_POST['content'] ?? '');
         
-        // Validate data
+        // Validation
         if (empty($content)) {
             $error = "Comment content is required.";
         } else {
@@ -93,7 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Handle different actions
 switch ($action) {
     case 'edit':
         // Get comment data for editing
@@ -138,11 +134,11 @@ switch ($action) {
         break;
         
     default:
-        // List all comments with pagination
+        
         $where = [];
         $params = [];
         
-        // Add search condition if search term is provided
+        
         if (!empty($search)) {
             $where[] = "(c.content LIKE ? OR s.title LIKE ? OR u.username LIKE ?)";
             $search_term = "%{$search}%";
@@ -151,22 +147,22 @@ switch ($action) {
             $params[] = $search_term;
         }
         
-        // Add story filter if provided
+        
         if ($story_filter > 0) {
             $where[] = "c.story_id = ?";
             $params[] = $story_filter;
         }
         
-        // Add user filter if provided
+        
         if ($user_filter > 0) {
             $where[] = "c.user_id = ?";
             $params[] = $user_filter;
         }
         
-        // Build where clause
+    
         $where_clause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
         
-        // Count total comments for pagination
+        
         $count_sql = "SELECT COUNT(*) as total 
                       FROM comments c
                       JOIN stories s ON c.story_id = s.id
@@ -191,10 +187,10 @@ switch ($action) {
         
         $comments = fetch_all($sql, array_merge($params, [$items_per_page, $offset]));
         
-        // Get stories for filter dropdown
+        
         $stories = fetch_all("SELECT id, title FROM stories ORDER BY title ASC");
         
-        // Get users for filter dropdown
+       
         $users = fetch_all("SELECT id, username FROM users ORDER BY username ASC");
         break;
 }
@@ -398,7 +394,7 @@ switch ($action) {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Handle select all checkbox
+  //  select all checkbox
   const selectAllCheckbox = document.getElementById('select-all');
   const commentCheckboxes = document.querySelectorAll('.comment-checkbox');
   const deleteSelectedButton = document.getElementById('delete-selected');
@@ -416,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Handle individual checkboxes
+  //  individual checkboxes
   commentCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', updateSelectedCount);
   });
@@ -436,6 +432,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <?php
-// Include footer
+
 require_once 'includes/footer.php';
 ?>

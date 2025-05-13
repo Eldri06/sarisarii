@@ -1,14 +1,10 @@
 <?php
-/**
- * Admin Login page for SariSari Stories
- */
 
-// Start the session
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Include necessary files
+
 require_once dirname(__DIR__) . '/includes/config.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 require_once dirname(__DIR__) . '/includes/functions.php';
@@ -21,12 +17,12 @@ if (is_admin()) {
     exit;
 }
 
-// Initialize variables
+
 $username_email = '';
 $error = '';
 $success = '';
 
-// Process login form
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get form data
     $username_email = sanitize($_POST['username_email'] ?? '');
@@ -40,13 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = login_user($username_email, $password);
         
         if (is_array($result)) {
-            // Login successful, now check if user is an admin
+            
             $user_id = $result['id'];
             $sql = "SELECT is_admin FROM users WHERE id = ?";
             $admin_check = fetch_one($sql, [$user_id]);
             
             if ($admin_check && isset($admin_check['is_admin']) && $admin_check['is_admin'] == 1) {
-                // User is an admin, start session
+                
                 start_session($result);
                 
                 // Redirect to admin dashboard
@@ -63,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Set the current year for copyright
 $current_year = date('Y');
 ?>
 <!DOCTYPE html>

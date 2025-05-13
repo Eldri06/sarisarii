@@ -1,18 +1,11 @@
 <?php
-/**
- * Create Test User for SariSari Stories
- * 
- * This script creates a test user account with predefined credentials.
- * This is for testing purposes only and should be removed in production.
- */
 
-// Include necessary files
 require_once 'includes/config.php';
 require_once 'includes/db.php';
 require_once 'includes/functions.php';
 require_once 'includes/auth.php';
 
-// Default test user credentials
+
 $test_user = [
     'username' => 'testuser',
     'email' => 'testuser@example.com',

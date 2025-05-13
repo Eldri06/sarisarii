@@ -1,20 +1,14 @@
 <?php
-/**
- * Admin Settings Management for SariSari Stories
- */
 
-// Page title
 $page_title = "Site Settings";
 
-// Include header
 require_once 'includes/header.php';
 
-// Initialize variables
 $message = '';
 $error = '';
 $settings = [];
 
-// Define settings sections and fields
+
 $settings_sections = [
     'general' => [
         'title' => 'General Settings',
@@ -127,30 +121,29 @@ $settings_sections = [
     ]
 ];
 
-// Process form submission
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     
     if ($action === 'update_settings') {
-        // In a real application, this would update a settings.php file or database table
-        // For this demo, we'll just show a success message
+     
         $_SESSION['success_message'] = "Settings updated successfully!";
         header('Location: settings.php');
         exit;
     } elseif ($action === 'clear_cache') {
-        // In a real application, this would clear cached data
+       
         $_SESSION['success_message'] = "Cache cleared successfully!";
         header('Location: settings.php');
         exit;
     } elseif ($action === 'backup_database') {
-        // In a real application, this would create a database backup
+       
         $_SESSION['success_message'] = "Database backup created successfully!";
         header('Location: settings.php');
         exit;
     }
 }
 
-// Check for active tab
+
 $active_tab = isset($_GET['tab']) && array_key_exists($_GET['tab'], $settings_sections) 
     ? $_GET['tab'] : key($settings_sections);
 ?>
@@ -269,7 +262,7 @@ $active_tab = isset($_GET['tab']) && array_key_exists($_GET['tab'], $settings_se
 </div>
 
 <style>
-/* Settings Page Specific Styles */
+
 .admin-settings {
   display: flex;
   gap: 20px;
@@ -423,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       
-      // Remove active class from all tabs and sections
+     
       tabLinks.forEach(tab => tab.classList.remove('active'));
       sections.forEach(section => section.classList.remove('active'));
       
@@ -437,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Activate corresponding section
       document.getElementById('section-' + sectionId).classList.add('active');
       
-      // Update URL without page reload
+      
       history.pushState(null, '', href);
     });
   });
@@ -456,6 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <?php
-// Include footer
+
 require_once 'includes/footer.php';
 ?>
