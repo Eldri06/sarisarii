@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Handle featured image upload
         if (isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK) {
-            $featured_image = upload_image($_FILES['featured_image'], 'uploads/stories');
+            $featured_image = upload_image($_FILES['featured_image'], 'stories/');
             
             if ($featured_image) {
                 $story_data['featured_image'] = $featured_image;

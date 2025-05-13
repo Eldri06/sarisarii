@@ -80,7 +80,7 @@ $current_year = date('Y');
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
-      background-color: #f5f5f5;
+      background-image: url('https://images.unsplash.com/photo-1669554017518-45d0337356f2?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&fbclid=IwZXh0bgNhZW0CMTEAAR7EkTCyoJl45dnNSSqM29mJADIB2MZK2rtUENzlVc4Re1QuIAta58IUndKjLQ_aem_1QH-HjkmCmede-BO5e-M5g');
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
@@ -98,14 +98,21 @@ $current_year = date('Y');
     }
     
     .admin-login-box {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      padding: 30px;
-    }
+      box-shadow: var(--box-shadow);
     
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    color: #fff;
+    border-radius: 10px;
+    padding: 30px 40px;
+    opacity: 10px;
+    backdrop-filter: blur(5px);
+    margin-top: -30px;
+    }
     .admin-login-logo {
       text-align: center;
       margin-bottom: 30px;
@@ -113,9 +120,10 @@ $current_year = date('Y');
     
     .admin-login-logo span {
       font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #2c3e50;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+
     }
     
     .admin-login-logo .admin-badge {
@@ -135,7 +143,7 @@ $current_year = date('Y');
     }
     
     .admin-login-title h1 {
-      color: #2c3e50;
+      color:rgb(255, 255, 255);
       font-size: 1.5rem;
       margin: 0;
     }
@@ -147,7 +155,7 @@ $current_year = date('Y');
     .admin-login-form label {
       display: block;
       margin-bottom: 8px;
-      color: #2c3e50;
+      color:rgb(255, 255, 255);
       font-weight: 500;
     }
     
@@ -168,7 +176,7 @@ $current_year = date('Y');
     .admin-login-form button {
       width: 100%;
       padding: 12px;
-      background-color: #3498db;
+      background-color: #F96D00;
       color: #fff;
       border: none;
       border-radius: 4px;
@@ -189,7 +197,7 @@ $current_year = date('Y');
     }
     
     .admin-login-links a {
-      color: #3498db;
+      color: #F96D00;
       text-decoration: none;
     }
     
@@ -202,7 +210,8 @@ $current_year = date('Y');
       padding: 15px;
       color: #7f8c8d;
       font-size: 0.8rem;
-      background-color: #2c3e50;
+      background: transparent;
+      backdrop-filter: blur(5px);
       color: #ecf0f1;
     }
     

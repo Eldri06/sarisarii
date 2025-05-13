@@ -80,7 +80,7 @@ $share_url = SITE_URL . '/story.php?slug=' . urlencode($slug);
                 
                 <?php if (!empty($story['featured_image'])): ?>
                     <div class="story-featured-image">
-                    <img src="<?php echo htmlspecialchars($story['/uploads/stories'] ?? 'images/default-story.jpg'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
+                    <img src="<?php echo htmlspecialchars($story['images/'] ?? 'images/default-story.jpg'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
                     </div>
                 <?php endif; ?>
                 

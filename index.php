@@ -115,7 +115,7 @@ $categories = get_categories();
           <?php foreach ($featured_stories as $story): ?>
             <div class="story-card">
               <div class="story-image">
-                <img src="<?php echo htmlspecialchars($story['/stories'] ?? 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&auto=format&fit=crop'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
+                <img src="<?php echo htmlspecialchars($story['images/'] ?? 'https://images.unsplash.com/photo-1581216340441-d47cad9210a4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
                 <a href="category.php?slug=<?php echo htmlspecialchars($story['category_slug'] ?? '#'); ?>" class="category"><?php echo htmlspecialchars($story['category']); ?></a>
               </div>
               <div class="story-content">
@@ -233,7 +233,7 @@ $categories = get_categories();
   <div class="container">
     <div class="newsletter-box">
       <div class="newsletter-content">
-        <h3>Subscribe to Our Newsletter</h3>
+        <h3>Subscribe to SariSari Stories</h3>
         <p>Stay updated with the latest stories, community events, and more.</p>
         <form class="newsletter-form">
           <input type="email" name="email" placeholder="Your email address" required>

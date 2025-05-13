@@ -84,7 +84,7 @@ if (!$category) {
                     <?php foreach ($stories as $story): ?>
                         <div class="story-card">
                             <div class="story-image">
-                                <img src="<?php echo htmlspecialchars($story['featured_image'] ?? 'images/default-story.jpg'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
+                                <img src="<?php echo htmlspecialchars($story['images/'] ?? 'images/default-story.jpg'); ?>" alt="<?php echo htmlspecialchars($story['title']); ?>">
                                 <a href="category.php?slug=<?php echo htmlspecialchars($story['category_slug']); ?>" class="category"><?php echo htmlspecialchars($story['category']); ?></a>
                             </div>
                             <div class="story-content">

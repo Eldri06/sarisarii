@@ -20,7 +20,7 @@ define('SITE_URL', 'http://localhost/sarisarii');
 define('ROOT_PATH', dirname(__DIR__) . '/');
 define('INCLUDES_PATH', ROOT_PATH . 'includes/');
 define('PUBLIC_PATH', ROOT_PATH . 'public/');
-define('UPLOADS_PATH', PUBLIC_PATH . 'uploads/');
+define('UPLOADS_PATH', PUBLIC_PATH . 'images/stories/');
 define('ADMIN_PATH', ROOT_PATH . 'admin/');
 
 // Email Configuration
